@@ -29,13 +29,13 @@
         <dependency>
             <groupId>io.mateu</groupId>
             <artifactId>mdd-springboot</artifactId>
-            <version>0.0.27</version>
+            <version>0.0.30</version>
         </dependency>
 
         <dependency>
             <groupId>io.mateu</groupId>
             <artifactId>security-htpasswd</artifactId>
-            <version>1.0.7</version>
+            <version>1.0.20</version>
         </dependency>
 
 

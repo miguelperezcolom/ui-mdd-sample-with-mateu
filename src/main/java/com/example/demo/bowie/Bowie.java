@@ -23,4 +23,7 @@ public class Bowie {
     @Submenu
     ThisIsASubmenu more;
 
+    @MenuOption
+    AForm aForm;
+
 }

@@ -5,28 +5,55 @@ import com.example.demo.bowie.brokersUsingSwapi.dtos.PeopleList;
 import com.vaadin.data.provider.QuerySortOrder;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 public class BrokersService {
     String baseResourceUrl = "https://swapi.dev/api/people/";
     RestTemplate restTemplate = new RestTemplate();
+    private static final int ROWS_PER_PAGE = 10;
 
     public List<Row> getListOfBrokers(BrokersView filters, List<QuerySortOrder> sortOrders, int offset, int limit) {
-        PeopleList peopleList = restTemplate.getForObject(baseResourceUrl, PeopleList.class);
-        return Arrays.stream(peopleList.getResults()).map(p -> {
-            Row r = new Row();
-            r.setId(Arrays.stream(p.getUrl().split("/")).reduce((first, second) -> second).get());
-            r.setName(p.getName());
-            r.setEmail(p.getHair_color() + "@" + p.getHair_color() + ".com");
-            return r;
-        }).collect(Collectors.toList());
+        String queryString = "";
+        List<Row> results = new ArrayList<>();
+        int current = offset;
+        int to = offset + limit;
+        while (current < to) {
+            int toSkip = 0;
+            if (current > 0) {
+                queryString = "?page=" + ((current / ROWS_PER_PAGE) + 1);
+                toSkip = offset % ROWS_PER_PAGE;
+            }
+            if (filters.getName() != null && !filters.getName().isEmpty()) {
+                queryString += "".equalsIgnoreCase(queryString)?"?":"&";
+                queryString += "name=" + URLEncoder.encode(filters.getName(), Charset.defaultCharset());
+            }
+            PeopleList peopleList = restTemplate.getForObject(baseResourceUrl + queryString, PeopleList.class);
+            results.addAll(Arrays.stream(peopleList.getResults()).map(p -> {
+                Row r = new Row();
+                r.setId(Arrays.stream(p.getUrl().split("/")).reduce((first, second) -> second).get());
+                r.setName(p.getName());
+                r.setEmail(p.getHair_color() + "@" + p.getHair_color() + ".com");
+                return r;
+            }).skip(toSkip).collect(Collectors.toList()));
+            current += ROWS_PER_PAGE;
+        }
+        return results;
     }
 
     public int gatherCount(BrokersView filters) {
-        PeopleList peopleList = restTemplate.getForObject(baseResourceUrl, PeopleList.class);
-        return peopleList.getResults().length;
+        String queryString = "";
+        if (filters.getName() != null && !filters.getName().isEmpty()) {
+            queryString += "".equalsIgnoreCase(queryString)?"?":"&";
+            queryString += "name=" + URLEncoder.encode(filters.getName(), Charset.defaultCharset());
+        }
+        PeopleList peopleList = restTemplate.getForObject(baseResourceUrl + queryString, PeopleList.class);
+        return peopleList.getCount();
     }
 
     public Broker getById(String id) {

@@ -39,7 +39,7 @@ public class BrokersView
 
     @Override
     public int gatherCount(BrokersView filters) {
-        return brokerService.getListOfBrokers(filters, null, 0, Integer.MAX_VALUE).size();
+        return brokerService.gatherCount(filters);
     }
 
 

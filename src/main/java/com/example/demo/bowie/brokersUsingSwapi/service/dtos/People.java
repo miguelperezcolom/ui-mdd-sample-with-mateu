@@ -1,4 +1,4 @@
-package com.example.demo.bowie.brokersUsingSwapi.dtos;
+package com.example.demo.bowie.brokersUsingSwapi.service.dtos;
 
 import lombok.Getter;
 import lombok.Setter;

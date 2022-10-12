@@ -1,8 +1,12 @@
-package com.example.demo.bowie.brokersUsingSwapi;
+package com.example.demo.bowie.brokersUsingSwapi.service;
 
-import com.example.demo.bowie.brokersUsingSwapi.dtos.People;
-import com.example.demo.bowie.brokersUsingSwapi.dtos.PeopleList;
+import com.example.demo.bowie.brokersUsingSwapi.Broker;
+import com.example.demo.bowie.brokersUsingSwapi.BrokersView;
+import com.example.demo.bowie.brokersUsingSwapi.Row;
+import com.example.demo.bowie.brokersUsingSwapi.service.dtos.People;
+import com.example.demo.bowie.brokersUsingSwapi.service.dtos.PeopleList;
 import com.vaadin.data.provider.QuerySortOrder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URLEncoder;
@@ -13,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
+@Service
 public class BrokersService {
     String baseResourceUrl = "https://swapi.dev/api/people/";
     RestTemplate restTemplate = new RestTemplate();
@@ -31,8 +36,9 @@ public class BrokersService {
             }
             if (filters.getName() != null && !filters.getName().isEmpty()) {
                 queryString += "".equalsIgnoreCase(queryString)?"?":"&";
-                queryString += "name=" + URLEncoder.encode(filters.getName(), Charset.defaultCharset());
+                queryString += "search=" + URLEncoder.encode(filters.getName(), Charset.defaultCharset());
             }
+            System.out.println("==>" + baseResourceUrl + queryString);
             PeopleList peopleList = restTemplate.getForObject(baseResourceUrl + queryString, PeopleList.class);
             results.addAll(Arrays.stream(peopleList.getResults()).map(p -> {
                 Row r = new Row();
@@ -41,6 +47,7 @@ public class BrokersService {
                 r.setEmail(p.getHair_color() + "@" + p.getHair_color() + ".com");
                 return r;
             }).skip(toSkip).collect(Collectors.toList()));
+            if (peopleList.getCount() < to) to = peopleList.getCount();
             current += ROWS_PER_PAGE;
         }
         return results;
@@ -50,8 +57,9 @@ public class BrokersService {
         String queryString = "";
         if (filters.getName() != null && !filters.getName().isEmpty()) {
             queryString += "".equalsIgnoreCase(queryString)?"?":"&";
-            queryString += "name=" + URLEncoder.encode(filters.getName(), Charset.defaultCharset());
+            queryString += "search=" + URLEncoder.encode(filters.getName(), Charset.defaultCharset());
         }
+        System.out.println("==>" + baseResourceUrl + queryString);
         PeopleList peopleList = restTemplate.getForObject(baseResourceUrl + queryString, PeopleList.class);
         return peopleList.getCount();
     }

@@ -1,22 +1,27 @@
 package com.example.demo.bowie.brokersUsingSwapi;
 
+import com.example.demo.bowie.brokersUsingSwapi.service.BrokersService;
 import com.vaadin.data.provider.QuerySortOrder;
 import io.mateu.mdd.core.interfaces.RpcCrudView;
 import io.mateu.mdd.shared.annotations.Caption;
 import io.mateu.mdd.shared.annotations.MainSearchFilter;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Getter
 @Setter
 @Caption("Brokers")
+@Component
 public class BrokersView
         implements
         RpcCrudView<BrokersView, Row, Broker> {
 
-    private final BrokersService brokerService = new BrokersService();
+    @Autowired
+    private BrokersService brokerService;
 
     @MainSearchFilter
     private String name;

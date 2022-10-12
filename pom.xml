@@ -29,7 +29,7 @@
         <dependency>
             <groupId>io.mateu</groupId>
             <artifactId>mdd-springboot</artifactId>
-            <version>0.0.30</version>
+            <version>0.100.4</version>
         </dependency>
 
         <dependency>

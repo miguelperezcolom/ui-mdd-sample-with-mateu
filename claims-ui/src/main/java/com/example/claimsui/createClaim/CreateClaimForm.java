@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class CreateClaimForm implements Runnable {
 
     @Autowired@Ignored
-    transient ClaimCreationService service = new ClaimCreationService();
+    transient ClaimCreationService service;
 
 
     private ClaimType type;

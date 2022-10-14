@@ -2,13 +2,16 @@ package com.example.claimsui.createClaim;
 
 import com.example.claimsui.shared.dtos.Claim;
 import com.example.claimsui.shared.dtos.ClaimType;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 public class ClaimCreationService {
 
-    String baseResourceUrl = "http://localhost:8081/api/claims/";
+    @Value("${claims.baseurl}")
+    String baseResourceUrl;
+
     RestTemplate restTemplate = new RestTemplate();
 
     public void createClaim(ClaimType type, String description) {

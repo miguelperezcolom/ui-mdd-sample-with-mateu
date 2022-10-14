@@ -2,6 +2,7 @@ package com.example.claimsui.claimsList;
 
 import com.example.claimsui.shared.dtos.Claim;
 import com.vaadin.data.provider.QuerySortOrder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -11,7 +12,9 @@ import java.util.stream.Collectors;
 @Service
 public class ClaimsListService {
 
-    String baseResourceUrl = "http://localhost:8081/api/claims/";
+    @Value("${claims.baseurl}")
+    String baseResourceUrl;
+
     RestTemplate restTemplate = new RestTemplate();
 
     public List<Row> getAll(ClaimsList filters, List<QuerySortOrder> sortOrders, int offset, int limit) {

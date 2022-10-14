@@ -35,3 +35,8 @@ It composes the `claims-ui` micro frontend at build time.
 It also contains some entities to showcase CRUD creation when we have direct access to the entities. 
 
 http://localhost:8080/
+
+
+## Disclaimer
+
+Maven 3.6.3 must be used

@@ -61,7 +61,7 @@ spec:
     spec:
       containers:
         - name: bowie
-          image: miguelperezcolom/bowie
+          image: miguelperezcolom/bowie:v1.7
           ports:
             - containerPort: 8080
 

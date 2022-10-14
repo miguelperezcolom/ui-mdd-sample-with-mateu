@@ -4,15 +4,17 @@ import com.example.claimsui.shared.dtos.Claim;
 import io.mateu.mdd.core.interfaces.PersistentPojo;
 import io.mateu.mdd.shared.annotations.Ignored;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 public class Editor extends EditorModel implements PersistentPojo {
 
 
     @Autowired
     @Ignored
-    private ClaimsListService service = new ClaimsListService();
+    private ClaimsListService service;
 
     @Ignored
     private Claim claim;
@@ -21,7 +23,8 @@ public class Editor extends EditorModel implements PersistentPojo {
         claim = new Claim();
     }
 
-    public Editor(Claim claim) {
+    public Editor(ClaimsListService service, Claim claim) {
+        this.service = service;
         init(claim);
     }
 

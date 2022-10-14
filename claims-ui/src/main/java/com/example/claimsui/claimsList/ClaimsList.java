@@ -24,7 +24,7 @@ public class ClaimsList implements RpcCrudView<ClaimsList, Row, Editor> {
 
     @Override
     public boolean isAddEnabled() {
-        return true;
+        return false;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class ClaimsList implements RpcCrudView<ClaimsList, Row, Editor> {
 
     @Override
     public Object onEdit(Row row) throws Throwable {
-        return new Editor(service.get(row.getId()));
+        return new Editor(service, service.get(row.getId()));
     }
 
     @Action(icon = VaadinIcons.CHECK)
